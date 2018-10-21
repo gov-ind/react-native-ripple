@@ -1,0 +1,30 @@
+{
+  "name": "react-native-ripple",
+  "version": "1.0.0",
+  "description": "HOC that adds a ripple",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgovind92/react-native-ripple.git"
+  },
+  "keywords": [
+    "['react-native-ripple'",
+    "'iOS",
+    "ripple'",
+    "Android",
+    "ripple']"
+  ],
+  "author": "gov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rgovind92/react-native-ripple/issues"
+  },
+  "homepage": "https://github.com/rgovind92/react-native-ripple#readme",
+  "peerDependencies": {
+    "react": "16.3.1",
+    "react-native": "0.55.4"
+  }
+}
