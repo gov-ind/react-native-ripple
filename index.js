@@ -6,13 +6,32 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 const easing = Easing.out(Easing.circle);
 const duration = 1500;
 const useNativeDriver = true;
 
-export const WithRipple = WrappedComponent => {
-  class ComponentWithRipple extends Component {
+export const WithRipple = Wrapped =>
+  /* eslint-disable max-len */
+  /**
+   *
+   * @augments {Component<{size: number, color: string, onPress: Function, wrapperStyle: number, hitSlop: Object}>}
+   *
+   */
+  class extends Component {
+    static propTypes = {
+      size: PropTypes.number,
+      color: PropTypes.string,
+      onPress: PropTypes.func,
+      wrapperStyle: PropTypes.any,
+      hitSlop: PropTypes.object
+    };
+
+    static defaultProps = {
+      size: 350
+    };
+
     state = {
       translateY: new Animated.Value(0),
       translateX: new Animated.Value(0),
@@ -22,16 +41,14 @@ export const WithRipple = WrappedComponent => {
 
     render() {
       const {
-          rippleSize,
-          divider,
-          accent,
-          secondary,
-          onPress,
-          wrapperStyle,
-          hitSlop,
-          ...rest
-        } = this.props,
-        { translateY, translateX, rippleScale, opacity } = this.state;
+        size,
+        color = '#414141',
+        onPress,
+        wrapperStyle,
+        hitSlop,
+        ...rest
+      } = this.props;
+      const { translateY, translateX, rippleScale, opacity } = this.state;
 
       return (
         <TouchableOpacity
@@ -39,14 +56,14 @@ export const WithRipple = WrappedComponent => {
           onPressOut={this._animateOut}
           onPress={onPress}
           activeOpacity={1}
-          style={[wrapperStyle, styles.wrapper]}
+          style={wrapperStyle}
           hitSlop={hitSlop}
         >
-          <WrappedComponent {...rest} pointerEvents='none' />
+          <Wrapped {...rest} pointerEvents='none' />
           <Animated.View
             style={[
               styles.ripple,
-              this.getStyle(rippleSize, textColor),
+              this.getStyle(size, color),
               {
                 opacity,
                 transform: [
@@ -69,18 +86,18 @@ export const WithRipple = WrappedComponent => {
     }
 
     _animateIn = e => {
-      const { rippleSize } = this.props,
+      const { size } = this.props,
         { translateY, translateX, rippleScale, opacity } = this.state;
 
       Animated.sequence([
         Animated.parallel([
           Animated.timing(translateY, {
-            toValue: e.nativeEvent.locationY - rippleSize / 2,
+            toValue: e.nativeEvent.locationY - size / 2,
             duration: 0,
             useNativeDriver
           }),
           Animated.timing(translateX, {
-            toValue: e.nativeEvent.locationX - rippleSize / 2,
+            toValue: e.nativeEvent.locationX - size / 2,
             duration: 0,
             useNativeDriver
           }),
@@ -124,7 +141,7 @@ export const WithRipple = WrappedComponent => {
           })
         ])
       ]).start();
-      
+
       this.props.onPressIn && this.props.onPressIn();
     };
 
@@ -149,27 +166,17 @@ export const WithRipple = WrappedComponent => {
       this.props.onPressOut && this.props.onPressOut();
     };
 
-    getStyle = (rippleSize, textColor) => ({
-      width: rippleSize,
-      height: rippleSize,
-      borderRadius: rippleSize / 2,
+    getStyle = (size, textColor) => ({
+      width: size,
+      height: size,
+      borderRadius: size / 2,
       backgroundColor: textColor
     });
-  }
-
-  ComponentWithRipple.defaultProps = {
-    rippleSize: 350
   };
-
-  return ComponentWithRipple;
-};
 
 export default WithRipple(View);
 
 const styles = StyleSheet.create({
-  wrapper: {
-    overflow: 'hidden'
-  },
   ripple: {
     position: 'absolute'
   }
