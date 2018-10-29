@@ -63,8 +63,11 @@ export const WithRipple = Wrapped =>
           <Animated.View
             style={[
               styles.ripple,
-              this.getStyle(size, color),
               {
+                width: size,
+                height: size,
+                borderRadius: size / 2,
+                backgroundColor: color,
                 opacity,
                 transform: [
                   {
@@ -165,13 +168,6 @@ export const WithRipple = Wrapped =>
 
       this.props.onPressOut && this.props.onPressOut();
     };
-
-    getStyle = (size, textColor) => ({
-      width: size,
-      height: size,
-      borderRadius: size / 2,
-      backgroundColor: textColor
-    });
   };
 
 export default WithRipple(View);
