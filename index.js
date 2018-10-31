@@ -56,7 +56,7 @@ export const WithRipple = Wrapped =>
           onPressOut={this._animateOut}
           onPress={onPress}
           activeOpacity={1}
-          style={wrapperStyle}
+          style={[styles.container, wrapperStyle]}
           hitSlop={hitSlop}
         >
           <Wrapped {...rest} pointerEvents='none' />
@@ -173,6 +173,9 @@ export const WithRipple = Wrapped =>
 export default WithRipple(View);
 
 const styles = StyleSheet.create({
+  container: {
+    overflow: 'hidden'
+  },
   ripple: {
     position: 'absolute'
   }
